@@ -212,7 +212,6 @@ public class ConnectToMySQL {
                 int correct = resultSet.getInt("correct");
                 int incorrect = resultSet.getInt("incorrect");
                 int wrong = resultSet.getInt("wrong");
-                String userFeedback = resultSet.getString("userFeedback");
                 String userGuess = resultSet.getString("userGuess");
                 String computerGeneratedCode = resultSet.getString("computerGeneratedCode");
                 int userId = resultSet.getInt("userId");
@@ -231,7 +230,7 @@ public class ConnectToMySQL {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mastermind", "menhajsharaf", "helloworld.com");
             Statement readStatement = connection.createStatement();
-            ResultSet resultSet = readStatement.executeQuery("SELECT * FROM user where userId = '" + userId +"'");
+            ResultSet resultSet = readStatement.executeQuery("SELECT * FROM userData where userId = '" + userId +"'");
             while (resultSet.next()) {
                 UserData userData = new UserData();
 //                resultSet.getInt("id"), resultSet.getString("computerFeedback"), resultSet.getString("userGuess"), resultSet.getString("computerGeneratedCode")
@@ -242,7 +241,7 @@ public class ConnectToMySQL {
                 userData.setUserGuess(resultSet.getString("userGuess"));
                 userData.setComputerGeneratedCode(resultSet.getString("computerGeneratedCode"));
                 userData.setUserId(userId);
-                System.out.println(userData.toString());
+//                System.out.println(userData.toString());
                 if (userData != null)
                     userDataList.add(userData);
                 else

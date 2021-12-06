@@ -97,7 +97,7 @@ public class MasterMind {
                 System.out.println("Game starts now");
                 play();
             } else if (userResponse.equalsIgnoreCase("history")) {
-                ArrayList<UserData> userDataList =  ConnectToMySQL.getUserDataFromDB();
+                ArrayList<UserData> userDataList =  ConnectToMySQL.getUsersDataFromDb(userId);
                 if (userDataList.size() > 0)
                     printUserData(userDataList);
 //                    for (UserData userDa: userDataList) {
@@ -115,11 +115,17 @@ public class MasterMind {
     private void printUserData(ArrayList<UserData> userData) {
         for (int i = 0; i < userData.size(); i++) {
             System.out.print(
-                    userData.get(i).id +"\n" +
-                    userData.get(i).getUserId() + "\n" +
-                    userData.get(i).computerFeedback + "\n" + userData.get(i).computerGeneratedCode + "\n" +
-                    userData.get(i).userGuess);
+                            "Id: " + userData.get(i).id +"\t" +
+                            "User id: " + userData.get(i).getUserId() + "\t" +
+                            "Correct Number: " + userData.get(i).correct + "\t" +
+                            "Incorrect Number: " + userData.get(i).incorrect + "\t" +
+                            "Wrong Number: " + userData.get(i).wrong + "\t" +
+                            "Computer Generated Numbers: " + userData.get(i).computerGeneratedCode + "\t" +
+                            "User Entered Numbers: " + userData.get(i).userGuess +"\t"
+            );
+            System.out.println();
         }
+
     }
     /**
      * Play starts the initial core logic of the game. It asks for user's input, generates random numbers, calls
