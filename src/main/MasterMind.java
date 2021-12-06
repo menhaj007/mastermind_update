@@ -109,22 +109,7 @@ public class MasterMind {
                 System.out.println("deleting...");
             }
     }
-    private void linkedHashmapTest() {
-//        Map<String,String> map = new HashMap<>();
-//        Map.Entry<String,String> entry = map.entrySet().iterator().next();
-//        String key = entry.getKey();
-//        String value = entry.getValue();
 
-//        Map<String,String> map = new LinkedHashMap<>();
-//        map.put("Active","33");
-//        map.put("Renewals Completed","3");
-//        map.put("Application","15");
-//        Map.Entry<String,String> entry = map.entrySet().iterator().next();
-//        String key= entry.getKey();
-//        String value=entry.getValue();
-//        System.out.println(key);
-//        System.out.println(value);
-    }
 
     private void printUserData(ArrayList<UserData> userData) {
         for (int i = 0; i < userData.size(); i++) {
