@@ -98,11 +98,12 @@ public class MasterMind {
                 play();
             } else if (userResponse.equalsIgnoreCase("history")) {
                 ArrayList<UserData> userDataList =  ConnectToMySQL.getUsersDataFromDb(userId);
-                if (userDataList.size() > 0)
+                if (userDataList.size() > 0) {
                     printUserData(userDataList);
-//                    for (UserData userDa: userDataList) {
-//                        System.out.println(userDa.getUserFeedback());
-//                    }
+                    System.out.println("Welcome back, What would like to do, choose one: play, history, delete-history");
+                    userResponse = userInput.next();
+                    isPlayAgain(userResponse);
+                }
                 else
                     System.out.println("No data found.");
 
@@ -110,8 +111,6 @@ public class MasterMind {
                 System.out.println("deleting...");
             }
     }
-
-
     private void printUserData(ArrayList<UserData> userData) {
         for (int i = 0; i < userData.size(); i++) {
             System.out.print(
@@ -145,21 +144,11 @@ public class MasterMind {
         int[] computerGeneratedNumbers = generateRandomNumbers();
         /** Below print is used for dev testing only */
         System.out.println("Computer generated " + Arrays.toString(computerGeneratedNumbers));
-
         int counter = 0;
-
-        Countdown.startCountdown();
-
+//        Countdown.startCountdown();
         while (!isWin && numberOfAttempts > 0) {
             System.out.println("You have " + numberOfAttempts + " attempts left.");
             System.out.println("Please enter your solution to crack the code ex 1234 -> " );
-            if (isTimeOver) {
-                System.out.println("You lost.");
-                System.out.println("Computer earns " + computerPoints);
-                System.out.println("Would like to play again? Yes, No, or type history.");
-                String checkResponse = userInput.next();
-                isPlayAgain(checkResponse);
-            }
             int[] userGuess = readUserInput();
             int size = calculate(computerGeneratedNumbers, userGuess);
             if (size == userGuess.length) {
@@ -181,7 +170,7 @@ public class MasterMind {
                 hint(computerGeneratedNumbers);
             }
             numberOfAttempts--;
-            if (numberOfAttempts == 0 && isTimeOver) {
+            if (numberOfAttempts == 0) {
                 System.out.println("You lost.");
                 System.out.println("Computer earns " + computerPoints);
                 System.out.println("Would like to play again? Yes, No, or type history.");

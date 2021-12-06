@@ -37,7 +37,6 @@ public class ConnectToMySQL {
             e.printStackTrace();
         }
     }
-
     public static void writeInputHistoryIntoDB(String userNameValue, String resultValue) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mastermind", "menhajsharaf", "helloworld.com");
@@ -74,7 +73,6 @@ public class ConnectToMySQL {
             e.printStackTrace();
         }
     }
-
     public static void writeFeedbackGuessToDB(String userNameValue, String feedbackValue, String guessValue) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mastermind", "menhajsharaf", "helloworld.com");
@@ -88,7 +86,6 @@ public class ConnectToMySQL {
             e.printStackTrace();
         }
     }
-
     public static void readFeedbackGuessFromDB() {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mastermind", "menhajsharaf", "helloworld.com");
@@ -103,7 +100,6 @@ public class ConnectToMySQL {
             e.printStackTrace();
         }
     }
-
     /**
      * ConnectToMySQL only works if the tables exist.
      */
@@ -150,7 +146,6 @@ public class ConnectToMySQL {
         }
         return getUserNameTest(userName);
     }
-
     private static Integer getUserNameTest(String userName) {
         Integer idFound = null;
         try {
@@ -224,7 +219,6 @@ public class ConnectToMySQL {
         }
         return userDataList;
     }
-
     public static ArrayList<UserData> getUsersDataFromDb(int userId) {
         ArrayList<UserData> userDataList = new ArrayList<>();
         try {
@@ -247,7 +241,6 @@ public class ConnectToMySQL {
                 else
                     System.out.println("No data found!");
             }
-
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
