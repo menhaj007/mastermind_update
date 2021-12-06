@@ -31,6 +31,7 @@ public class MasterMind {
      * @see #play()
      */
     Scanner userInput = new Scanner(System.in);
+    static boolean isTimeOver = false;
     /**  #computerPoints at the beginning each has 10 */
     double computerPoints = 10;
     /** Field, userPoints if user guesses wrong numbers points will be deducted.*/
@@ -138,11 +139,21 @@ public class MasterMind {
         int[] computerGeneratedNumbers = generateRandomNumbers();
         /** Below print is used for dev testing only */
         System.out.println("Computer generated " + Arrays.toString(computerGeneratedNumbers));
-        /** Countdown.startCountdown(); */
+
         int counter = 0;
+
+        Countdown.startCountdown();
+
         while (!isWin && numberOfAttempts > 0) {
             System.out.println("You have " + numberOfAttempts + " attempts left.");
             System.out.println("Please enter your solution to crack the code ex 1234 -> " );
+            if (isTimeOver) {
+                System.out.println("You lost.");
+                System.out.println("Computer earns " + computerPoints);
+                System.out.println("Would like to play again? Yes, No, or type history.");
+                String checkResponse = userInput.next();
+                isPlayAgain(checkResponse);
+            }
             int[] userGuess = readUserInput();
             int size = calculate(computerGeneratedNumbers, userGuess);
             if (size == userGuess.length) {
@@ -160,11 +171,11 @@ public class MasterMind {
             getFeedbackFromArray();
             userPoints--;
             computerPoints++;
-            if (counter > 3) {
+            if (counter >= 3) {
                 hint(computerGeneratedNumbers);
             }
             numberOfAttempts--;
-            if (numberOfAttempts == 0) {
+            if (numberOfAttempts == 0 && isTimeOver) {
                 System.out.println("You lost.");
                 System.out.println("Computer earns " + computerPoints);
                 System.out.println("Would like to play again? Yes, No, or type history.");

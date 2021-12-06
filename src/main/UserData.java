@@ -2,18 +2,23 @@ package main;
 
 public class UserData {
     int id;
-    String computerFeedback;
+    int correct;
+    int incorrect;
+    int wrong;
     String userGuess;
     String computerGeneratedCode;
     int userId;
 
     public UserData() {
     }
-    public UserData(int id, String computerFeedback, String userGuess, String computerGeneratedCode, int userId) {
+    public UserData(int id, int correct, int incorrect, int wrong, String userGuess, String computerGeneratedCode, int userId) {
         this.id = id;
-        this.computerFeedback = computerFeedback;
-        this.computerGeneratedCode = computerGeneratedCode;
+        this.correct = correct;
+        this.incorrect = incorrect;
+        this.wrong = wrong;
         this.userGuess = userGuess;
+        this.computerGeneratedCode = computerGeneratedCode;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -22,14 +27,6 @@ public class UserData {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getComputerFeedback() {
-        return computerFeedback;
-    }
-
-    public void setComputerFeedback(String computerFeedback) {
-        this.computerFeedback = computerFeedback;
     }
 
     public String getUserGuess() {
@@ -58,9 +55,35 @@ public class UserData {
     @Override
     public String toString() {
         return "" + id + "\n" +
-        computerFeedback + "\n" +
+        correct + "\n" +
+        incorrect + "\n" +
+        wrong + "\n" +
         userGuess + "\n" +
         computerGeneratedCode + "\n" +
         userId;
+    }
+
+    public int getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(int correct) {
+        this.correct = correct;
+    }
+
+    public int getIncorrect() {
+        return incorrect;
+    }
+
+    public void setIncorrect(int incorrect) {
+        this.incorrect = incorrect;
+    }
+
+    public int getWrong() {
+        return wrong;
+    }
+
+    public void setWrong(int wrong) {
+        this.wrong = wrong;
     }
 }
