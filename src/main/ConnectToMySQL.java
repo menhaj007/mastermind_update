@@ -209,11 +209,14 @@ public class ConnectToMySQL {
 //            (int id, String userFeedback, String userGuess, String computerGeneratedCode, int userId)
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
+                int correct = resultSet.getInt("correct");
+                int incorrect = resultSet.getInt("incorrect");
+                int wrong = resultSet.getInt("wrong");
                 String userFeedback = resultSet.getString("userFeedback");
                 String userGuess = resultSet.getString("userGuess");
                 String computerGeneratedCode = resultSet.getString("computerGeneratedCode");
                 int userId = resultSet.getInt("userId");
-                UserData userData = new UserData(id, userFeedback, userGuess, computerGeneratedCode, userId);
+                UserData userData = new UserData(id, correct, incorrect, wrong, userGuess, computerGeneratedCode, userId);
                 userDataList.add(userData);
             }
             connection.close();
@@ -233,11 +236,12 @@ public class ConnectToMySQL {
                 UserData userData = new UserData();
 //                resultSet.getInt("id"), resultSet.getString("computerFeedback"), resultSet.getString("userGuess"), resultSet.getString("computerGeneratedCode")
                 userData.setId(resultSet.getInt("id"));
-                userData.setComputerFeedback(resultSet.getString("computerFeedback"));
+                userData.setCorrect(resultSet.getInt("correct"));
+                userData.setIncorrect(resultSet.getInt("incorrect"));
+                userData.setWrong(resultSet.getInt("wrong"));
                 userData.setUserGuess(resultSet.getString("userGuess"));
                 userData.setComputerGeneratedCode(resultSet.getString("computerGeneratedCode"));
                 userData.setUserId(userId);
-
                 System.out.println(userData.toString());
                 if (userData != null)
                     userDataList.add(userData);
