@@ -65,6 +65,7 @@ public class MasterMind {
      * It only changes when console re-runs.
      */
     String userName = "";
+    int userId = 0;
     /**
      *  #userId the intention was to build a one to many relationship for mysql and use UserId to connect them.
      * But due to the time constrains, it is not implemented.
@@ -78,7 +79,61 @@ public class MasterMind {
     public void start() {
         System.out.println("Please enter your name. ex: James");
         userName = userInput.next();
-        play();
+        HashMap<Integer, String> user = ConnectToMySQL.getUserFromDB(userName);
+        if (user.isEmpty()) {
+            System.out.println("User doesn't exist. creating a user " + userName);
+            userId = ConnectToMySQL.saveUserInToDB(userName);
+            System.out.println("Your user Id is " + userId);
+            play();
+            }
+        Iterator<Integer> iterator = user.keySet().iterator();
+        userId = iterator.hasNext() ? (int) iterator.next(): 0;
+
+        System.out.println("User id found " + userId);
+        System.out.println("Welcome back, What would like to do, choose one: play, history, delete-history");
+        String userResponse = userInput.next();
+            if (userResponse.equalsIgnoreCase("play")) {
+                System.out.println("Game starts now");
+                play();
+            } else if (userResponse.equalsIgnoreCase("history")) {
+                ArrayList<UserData> userDataList =  ConnectToMySQL.getUserDataFromDB();
+                if (userDataList.size() > 0)
+                    printUserData(userDataList);
+//                    for (UserData userDa: userDataList) {
+//                        System.out.println(userDa.getUserFeedback());
+//                    }
+                else
+                    System.out.println("No data found.");
+
+            } else {
+                System.out.println("deleting...");
+            }
+    }
+    private void linkedHashmapTest() {
+//        Map<String,String> map = new HashMap<>();
+//        Map.Entry<String,String> entry = map.entrySet().iterator().next();
+//        String key = entry.getKey();
+//        String value = entry.getValue();
+
+//        Map<String,String> map = new LinkedHashMap<>();
+//        map.put("Active","33");
+//        map.put("Renewals Completed","3");
+//        map.put("Application","15");
+//        Map.Entry<String,String> entry = map.entrySet().iterator().next();
+//        String key= entry.getKey();
+//        String value=entry.getValue();
+//        System.out.println(key);
+//        System.out.println(value);
+    }
+
+    private void printUserData(ArrayList<UserData> userData) {
+        for (int i = 0; i < userData.size(); i++) {
+            System.out.print(
+                    userData.get(i).id +"\n" +
+                    userData.get(i).getUserId() + "\n" +
+                    userData.get(i).computerFeedback + "\n" + userData.get(i).computerGeneratedCode + "\n" +
+                    userData.get(i).userGuess);
+        }
     }
     /**
      * Play starts the initial core logic of the game. It asks for user's input, generates random numbers, calls
@@ -97,7 +152,7 @@ public class MasterMind {
         System.out.println("Computer generating a random number");
         int[] computerGeneratedNumbers = generateRandomNumbers();
         /** Below print is used for dev testing only */
-        /** System.out.println("Computer generated " + Arrays.toString(computerGeneratedNumbers)); */
+        System.out.println("Computer generated " + Arrays.toString(computerGeneratedNumbers));
         /** Countdown.startCountdown(); */
         int counter = 0;
         while (!isWin && numberOfAttempts > 0) {
@@ -116,6 +171,7 @@ public class MasterMind {
                 String checkResponse = userInput.next();
                 isPlayAgain(checkResponse);
             }
+//             ArrayList<UserData> retrievedUserDataFromDb = ConnectToMySQL.getUsersDataFromDb(userId);
             getFeedbackFromArray();
             userPoints--;
             computerPoints++;
@@ -298,19 +354,18 @@ public class MasterMind {
             }
         }
         incorrectGuess = userGuess.length-(guessedCorrectAndNumberLocation+guessedCorrectNumber);
+
         String correctResult = "Correct number & location: " + guessedCorrectAndNumberLocation;
         String incorrectResult = "Correct number only: " + guessedCorrectNumber;
         String incorrectGuessResult = "Incorrect: " + incorrectGuess;
-        HashMap<String, Integer> objResult = new HashMap<String, Integer>();
-        objResult.put("correctNumberLocation", guessedCorrectAndNumberLocation);
-        objResult.put("correctNumberOnly", guessedCorrectNumber);
-        objResult.put("incorrectGuess", incorrectGuess);
-        writeFeedbackIntoDB(objResult);
-        saveFeedbackToArray(numberOfSavedFeedback,correctResult, incorrectResult, incorrectGuessResult);
-        String tmpGuess = Arrays.toString(userGuess);
-        String tmpFeedback = correctResult +" | " + incorrectGuessResult +" | " + incorrectGuessResult;
-        writeFeedbackGuessToDB(userName, tmpFeedback, tmpGuess);
-        System.out.println("Printing... You guessed -> " + Arrays.toString(userGuess));
+
+        saveFeedbackToArray(numberOfSavedFeedback, correctResult, incorrectResult, incorrectGuessResult);
+
+        String computerFeedback = correctResult +"\t" + incorrectResult + "\t" + incorrectGuessResult;
+        String computerGeneratedCode = Arrays.toString(computerGeneratedNumbers);
+        String userGuessStr = Arrays.toString(userGuess);
+        System.out.println("User id: " + userId);
+        ConnectToMySQL.saveUserDataInDB(guessedCorrectAndNumberLocation, guessedCorrectNumber, incorrectGuess, userGuessStr, computerGeneratedCode, userId);
         return guessedCorrectAndNumberLocation;
     }
     /**
